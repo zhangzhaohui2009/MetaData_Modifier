@@ -1,4 +1,4 @@
-This is a Python utility to reprocess/modify the netCDF metadata attributes. The file MerraMetaData_Modifier.py encloses the core python modules to read,process the new atrribute LUTs(metadata) in excel, csv, and ascii files, and further add, remove and modify the exisiting metadata atrributes of the target netCDF data files. 
+This is a Python utility to reprocess/modify the netCDF metadata attributes. The file MerraMetaData_Modifier.py encloses the core python modules to read and process the new attribute LUTs(metadata) in excel, csv, and ascii files, and further add, remove and modify the exisiting metadata attributes of the target netCDF data files. 
 
 M2OCEAN_global_metadata_main.py is the main driver for processing the M2OCEAN netCDF data files. This main driver
 program may be used as a template for other product/collection files where some specific (dynamic)
