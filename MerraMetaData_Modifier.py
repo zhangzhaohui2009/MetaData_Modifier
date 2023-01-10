@@ -41,7 +41,11 @@ class MetaData_Dictionary(object):
       try:
          if file_type == '.xls':         
             sheet_name = kwargs.get('sheet_name','metadata')
-            self.df = pd.read_excel(MetaData_File, sheet_name=sheet_name, usecols=usecols)
+            #self.df = pd.read_excel(MetaData_File, sheet_name=sheet_name, usecols=usecols)
+            self.df = pd.read_excel(MetaData_File, sheet_name=sheet_name)
+            self.df = self.df.rename(columns=lambda x: x.strip())
+            if usecols is not None:
+               self.df = self.df[usecols]
             cc = self.df.columns.values
             self.usecols = cc if usecols == None else usecols
             #print(self.df[self.KeyCol] )
