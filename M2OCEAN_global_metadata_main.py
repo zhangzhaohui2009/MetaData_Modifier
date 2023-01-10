@@ -30,6 +30,8 @@ How to use:
 
 def m2ocean_main(inFile, outFile, **kwargs):
     verbose = kwargs.get('verbose', False)
+    meta_excel = kwargs.get('excel_file', 'M2OCEAN_global_metadata.xls')
+    meta_csv   = kwargs.get('csv_file', 'M2OCN_gmet.csv')
 
     def InfoFromFileName(fileName):
         ScienceProductName = fileName.split('.')[1]
@@ -63,7 +65,7 @@ def m2ocean_main(inFile, outFile, **kwargs):
     
     # map productName to shortName
     md = MetaData_Dictionary()
-    md.loadMetaDataTabel('M2OCEAN_global_metadata.xls',
+    md.loadMetaDataTabel(meta_excel,
                           sheet_name='products', usecols=['ShortName','ScienceProductName'])
     attrs = md.selectOneRow(ProductName, KeyCol='ScienceProductName')
     shortName = attrs['ShortName']
@@ -83,11 +85,11 @@ def m2ocean_main(inFile, outFile, **kwargs):
     mf = MetaData_Modifier(inFile, OutFile=outFile)
     mf.add_globalmeta(attrs, verbose=verbose)
 
-    # global attributes with static values specific to product collection
-    mf.add_globalmeta_file('M2OCEAN_global_metadata.xls', KeyCol='ShortName', KeyValue=shortName, sheet_name='metadata')
-
     # global attributes with static values common in all files
-    mf.add_globalmeta_file('M2OCN_gmet.csv', delimiter='=', header=None, names=['a','b'], KeyCol='a',ValCol='b')
+    mf.add_globalmeta_file(meta_excel, KeyCol='ShortName', KeyValue=shortName, sheet_name='metadata')
+
+    # global attributes with static values specific to product collection
+    mf.add_globalmeta_file(meta_csv, delimiter='=', header=None, names=['a','b'], KeyCol='a',ValCol='b')
     mf.close()
     
 if __name__ == "__main__":
