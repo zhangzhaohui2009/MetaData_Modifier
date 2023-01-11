@@ -52,6 +52,9 @@ class MetaData_Dictionary(object):
 
          if file_type == '.csv' or file_type == '.txt':         
             self.df = pd.read_csv(MetaData_File,**kwargs)
+            self.df = self.df.rename(columns=lambda x: x.strip())
+            if usecols is not None:
+               self.df = self.df[usecols]
             cc = self.df.keys().values
             self.usecols = cc if usecols == None else usecols
             for col in self.usecols:
@@ -164,18 +167,19 @@ class MetaData_Modifier(object):
             ds.setncatts({key: value})
             if verbose:
                print("Replace Meta: {} from  '{}' to '{}'".format(key,  old_value, value))
+         self.nc_attrs = self.fid.ncattrs()
 
 
-   def add_globalmeta_file(self, attr_file, KeyCol=None, KeyValue=None, ValCol=None,  **kwargs):
+   def add_globalmeta_file(self, attr_file, KeyCol=None, KeyName=None, ValCol=None,  **kwargs):
       if KeyCol == None:
          print("Error: the KeyCol (column containg the keys) is not set ...")
          return
        
       verbose = kwargs.get('verbose', False)
       overwrite = kwargs.get('overwrite', True)
-      if ((KeyValue == None and ValCol == None) or 
-         (KeyValue != None and ValCol != None)) :
-         message = '''Error: set either an element in the KeyCol (KeyValue=) 
+      if ((KeyName == None and ValCol == None) or 
+         (KeyName != None and ValCol != None)) :
+         message = '''Error: set either an element in the KeyCol (KeyName=) 
           or a column name (ValCol=), not both or none ...'''
          print(message)
          return
@@ -186,10 +190,10 @@ class MetaData_Modifier(object):
          attrs= md.selectTwoCols(KeyCol=KeyCol, ValCol=ValCol)
          self.add_globalmeta(attrs, verbose=verbose)
  
-      if KeyValue != None:
+      if KeyName != None:
          # global attributes with static values specific to product collection
          md.loadMetaDataTabel(attr_file, **kwargs)
-         attrs = md.selectOneRow(KeyValue, KeyCol=KeyCol) 
+         attrs = md.selectOneRow(KeyName, KeyCol=KeyCol) 
          self.add_globalmeta(attrs, verbose=verbose)
 
    def list_globalmeta(self, verbose=False):
