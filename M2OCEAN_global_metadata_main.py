@@ -86,7 +86,7 @@ def m2ocean_main(inFile, outFile, **kwargs):
     mf.add_globalmeta(attrs, verbose=verbose)
 
     # global attributes with static values common in all files
-    mf.add_globalmeta_file(meta_excel, KeyCol='ShortName', KeyValue=shortName, sheet_name='metadata')
+    mf.add_globalmeta_file(meta_excel, KeyCol='ShortName', KeyName=shortName, sheet_name='metadata')
 
     # global attributes with static values specific to product collection
     mf.add_globalmeta_file(meta_csv, delimiter='=', header=None, names=['a','b'], KeyCol='a',ValCol='b')
